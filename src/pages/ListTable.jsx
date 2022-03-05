@@ -1,70 +1,100 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import './less/ListTable.less'
 import { Table, Button, Space } from 'antd';
-import { Link } from 'react-router-dom'
-import {ArticleListApi} from '../request/api'
+import moment from 'moment'
+import { ArticleListApi } from '../request/api'
+
+// 标题组件
+function MyTitle(props) {
+    return (
+        <div>
+            <a className='table_title' href={"http://codesohigh.com:8765/article/" + props.id} target="_blank">{props.title}</a>
+            <p style={{ color: '#999' }}>{props.subTitle}</p>
+        </div>
+    )
+}
 
 export default function ListTable() {
     // 列表数组
-    const [arr, setArr] = useState([
-        {
-            key: '1',
-            name: 'John Brown',
-            subName: "asda",
-            address: 'New York No. 1 Lake Park',
-        }
-    ])
+    const [arr, setArr] = useState([])
+    // 分页
+    const [pagination, setPagination] = useState({ current: 1, pageSize: 10, total: 0 })
 
-    // 请求文章列表
-    useEffect(()=>{
-        ArticleListApi().then(res=>{
-            if(res.errCode===0){
+    // 提取请求的代码
+    const getArticleList = (current, pageSize) => {
+        ArticleListApi({
+            num: current,
+            count: pageSize
+        }).then(res => {
+            if (res.errCode === 0) {
+                // 更改pagination
+                let { num, count, total } = res.data;
+                setPagination({ current: num, pageSize: count, total })
+                // 深拷贝获取到的数组
                 let newArr = JSON.parse(JSON.stringify(res.data.arr));
+                // 声明一个空数组
+                let myarr = []
                 /* 
                     1. 要给每个数组项加key，让key=id
                     2. 需要有一套标签结构，赋予一个属性
                 */
-                newArr.map(item=>{
-                    item.key = item.id;
-                    item.mytitle = `
-                        <>
-                            <Link className='table_title' to="/">标题</Link>
-                            <p style={{ color: '#999' }}>简直是大家</p>
-                        </>
-                    `;
+                newArr.map(item => {
+                    let obj = {
+                        key: item.id,
+                        date: moment(item.date).format("YYYY-MM-DD hh:mm:ss"),
+                        mytitle: <MyTitle id={item.id} title={item.title} subTitle={item.subTitle} />
+                    }
+                    myarr.push(obj)
                 })
-                console.log(newArr)
+                setArr(myarr)
             }
         })
+    }
+
+    // 请求文章列表(mounted)
+    useEffect(() => {
+        getArticleList(pagination.current, pagination.pageSize);
     }, [])
+
+    // 分页的函数
+    const pageChange = (arg) => getArticleList(arg.current, arg.pageSize);
 
     // 每一列
     const columns = [
         {
-            dataIndex: 'name',
-            key: 'name',
-            width: '60%'
+            dataIndex: 'mytitle',
+            key: 'mytitle',
+            width: '60%',
+            render: text => <div>{text}</div>
         },
         {
-            dataIndex: 'address',
-            key: 'address',
-            render: text => <p>2022-03-03 20:33:06</p>,
+            dataIndex: 'date',
+            key: 'date',
+            render: text => <p>{text}</p>,
         },
         {
             key: 'action',
-            render: (text, record) => (
-                <Space size="middle">
-                    <Button type='primary'>编辑</Button>
-                    <Button type='danger'>删除</Button>
-                </Space>
-            ),
+            render: text => {
+                return (
+                    <Space size="middle">
+                        {/* text.key就是id */}
+                        <Button type='primary' onClick={() => console.log(text.key)}>编辑</Button>
+                        <Button type='danger' onClick={() => console.log(text.key)}>删除</Button>
+                    </Space>
+                )
+            },
         },
     ];
 
     return (
         <div className='list_table'>
-            {/* columns列   dataSource数据 */}
-            <Table showHeader={false} columns={columns} dataSource={arr} />
+            <Table
+                showHeader={false}
+                columns={columns}
+                dataSource={arr}
+                onChange={pageChange}
+                pagination={pagination}
+            />
         </div>
     )
 }

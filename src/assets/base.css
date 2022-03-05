@@ -51,8 +51,8 @@ header .right .ant-dropdown-link:hover {
   flex-direction: column;
 }
 .container .container_box .container_content {
-  margin-top: 20px;
-  flex: 1;
+  height: calc(100vh - 210px);
+  overflow: hidden;
 }
 footer {
   height: 70px;

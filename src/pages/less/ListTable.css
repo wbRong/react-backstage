@@ -2,6 +2,26 @@
   width: 100%;
   background: #fff;
   height: 100%;
+  overflow-y: scroll;
+}
+.list_table::-webkit-scrollbar {
+  /*滚动条整体样式*/
+  width: 10px;
+  height: 100%;
+  background: #fff;
+  border-radius: 10px;
+}
+.list_table::-webkit-scrollbar-track {
+  /*滚动条里面轨道*/
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  background: #EDEDED;
+}
+.list_table::-webkit-scrollbar-thumb {
+  /*滚动条里面小方块*/
+  border-radius: 10px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: #535353;
 }
 .list_table .table_title {
   color: #333;

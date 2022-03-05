@@ -1,0 +1,11 @@
+.list_table {
+  width: 100%;
+  background: #fff;
+  height: 100%;
+}
+.list_table .table_title {
+  color: #333;
+}
+.list_table .table_title:hover {
+  color: #1890ff;
+}

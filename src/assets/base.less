@@ -1,6 +1,6 @@
 @import '~antd/dist/antd.css';
 
-@bgcolor: #efefef;
+@bgcolor: #f0f2f5;
 
 body{
     font-size: 14px;
@@ -11,7 +11,6 @@ body{
 
 #app{
     height: 100vh;
-    background: pink;
 }
 
 header{
@@ -39,6 +38,27 @@ header{
             &:hover{
                 color: #1890ff;
             }
+        }
+    }
+}
+
+
+
+.container{
+    display: flex;
+    justify-content: space-between;
+    .aside{
+        height: calc(100vh - 140px);
+    }
+    .container_box{
+        flex: 1;
+        box-sizing: border-box;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        .container_content{
+            margin-top: 20px;
+            flex: 1;
         }
     }
 }

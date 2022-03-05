@@ -3,11 +3,10 @@ body {
   font-size: 14px;
   color: #333;
   font-family: "微软雅黑";
-  background: #efefef;
+  background: #f0f2f5;
 }
 #app {
   height: 100vh;
-  background: pink;
 }
 header {
   height: 70px;
@@ -36,6 +35,24 @@ header .right .ant-dropdown-link {
 }
 header .right .ant-dropdown-link:hover {
   color: #1890ff;
+}
+.container {
+  display: flex;
+  justify-content: space-between;
+}
+.container .aside {
+  height: calc(100vh - 140px);
+}
+.container .container_box {
+  flex: 1;
+  box-sizing: border-box;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.container .container_box .container_content {
+  margin-top: 20px;
+  flex: 1;
 }
 footer {
   height: 70px;

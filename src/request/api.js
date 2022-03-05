@@ -8,3 +8,6 @@ export const LoginApi = (params) => request.post('/login', params)
 
 // 获取文章列表
 export const ArticleListApi = (params) => request.get('/article', {params})
+
+// 上传头像
+export const UploadAvatarApi = (params) => request.post('/upload', params)

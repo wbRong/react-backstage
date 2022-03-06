@@ -11,10 +11,17 @@ const instance = axios.create(axiosOption);
 
 // 添加请求拦截器
 instance.interceptors.request.use(function (config) {
+<<<<<<< HEAD
   let token = localStorage.getItem("cms-token")
   if(token){
     config.headers = {
       "cms-token": token
+=======
+  let token = localStorage.getItem('cms-token')
+  if(token){
+    config.headers = {
+      'cms-token': token
+>>>>>>> 0012d386a6818fceddf42a6220591c3858407138
     }
   }
   return config;

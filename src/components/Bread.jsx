@@ -24,6 +24,7 @@ export default function Bread() {
                 setBreadName('修改资料');
                 break;
             default:
+                setBreadName(pathname.includes('edit') ? '文章编辑' : "");
                 break;
         }
     }, [pathname])

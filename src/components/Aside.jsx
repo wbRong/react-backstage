@@ -13,7 +13,7 @@ export default function Aside() {
         let path = location.pathname;
         let key = path.split('/')[1];
         setDefaultKey(key)
-    }, [])
+    }, [location.pathname])
 
     const handleClick = e => {
         navigate('/'+e.key)

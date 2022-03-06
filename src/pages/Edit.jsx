@@ -1,30 +1,51 @@
 import React, { useEffect, useState } from 'react'
-import { PageHeader, Button, Modal, Form, Input } from 'antd';
+import { PageHeader, Button, Modal, Form, Input, message } from 'antd';
 import moment from 'moment'
 import E from 'wangeditor'
-import {ArticleAddApi, ArticleSearchApi} from '../request/api'
-import {useParams} from 'react-router-dom'
+import { ArticleAddApi, ArticleSearchApi, ArticleUpdateApi } from '../request/api'
+import { useParams, useNavigate, useLocation } from 'react-router-dom'
 
 let editor = null
 
 export default function Edit() {
   const [content, setContent] = useState('')
+  const location = useLocation()
+  const [title, setTitle] = useState('')
+  const [subTitle, setSubTitle] = useState('')
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const navigate = useNavigate()
   const [form] = Form.useForm();
   const params = useParams()
 
+  // 处理请求数据
+  const dealData = (errCode, msg) => {
+    setIsModalVisible(false); // 关闭对话框
+    if (errCode === 0) {
+      message.success(msg)
+      setTimeout(() => {
+        // 跳回list页面
+        navigate('/listlist')
+      }, 1500)
+    } else {
+      message.error(msg)
+    }
+  }
+
   // 对话框点击了提交
   const handleOk = () => {
-    // setIsModalVisible(false); // 关闭对话框
     form
       .validateFields()    // validate校验   field字段
       .then((values) => {
         // form.resetFields();   // reset重置
-        let {title, subTitle} = values;
-        // 请求
-        ArticleAddApi({ title, subTitle, content }).then(res=>{
-          console.log(res)
-        })
+        let { title, subTitle } = values;
+        // 地址栏有id代表现在想要更新一篇文章
+        if (params.id) {
+          // 更新文章的请求
+          ArticleUpdateApi({ title, subTitle, content, id: params.id }).then(res => dealData(res.errCode, res.message))
+        } else {
+          // 添加文章的请求
+          ArticleAddApi({ title, subTitle, content }).then(res => dealData(res.errCode, res.message))
+        }
       })
       .catch(() => false);
   };
@@ -38,13 +59,12 @@ export default function Edit() {
     editor.create()
 
     // 根据地址栏id做请求
-    if(params.id){
-      ArticleSearchApi({id: params.id}).then(res=>{
-        if(res.errCode===0){
-          let {title, subTitle} = res.data;
+    if (params.id) {
+      ArticleSearchApi({ id: params.id }).then(res => {
+        if (res.errCode === 0) {
           editor.txt.html(res.data.content) // 重新设置编辑器内容
-          // console.log(res.data.content)
-          // setContent(res.data.content)
+          setTitle(res.data.title)
+          setSubTitle(res.data.subTitle)
         }
       })
     }
@@ -53,7 +73,7 @@ export default function Edit() {
       // 组件销毁时销毁编辑器  注：class写法需要在componentWillUnmount中调用
       editor.destroy()
     }
-  }, [])
+  }, [location.pathname])
 
   return (
     <div>
@@ -72,6 +92,7 @@ export default function Edit() {
           labelCol={{ span: 3 }}
           wrapperCol={{ span: 21 }}
           autoComplete="off"
+          initialValues={{ title, subTitle }}
         >
           <Form.Item
             label="标题"

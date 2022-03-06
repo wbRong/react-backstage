@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { List, Skeleton, Pagination } from 'antd';
+import { List, Skeleton, Pagination, Button } from 'antd';
 import { ArticleListApi } from '../request/api'
+import {useNavigate} from 'react-router-dom'
+import moment from 'moment'
 
 export default function ListList() {
   const [list, setList] = useState([])
+  const navigate = useNavigate()
   const [total, setTotal] = useState(0)
   const [current, setCurrent] = useState(1)
   const [pageSize, setPageSize] = useState(10)
@@ -42,14 +45,17 @@ export default function ListList() {
         dataSource={list}
         renderItem={item => (
           <List.Item
-            actions={[<a key="list-loadmore-edit">edit</a>, <a key="list-loadmore-more">more</a>]}
+            actions={[
+              <Button type='primary' onClick={()=>navigate('/edit/'+item.id)}>编辑</Button>, 
+              <Button type='danger' onClick={()=>console.log(item.id)}>删除</Button>
+            ]}
           >
             <Skeleton loading={false}>
               <List.Item.Meta
                 title={<a href="!#">{item.title}</a>}
                 description={item.subTitle}
               />
-              <div>{item.date}</div>
+              <div>{moment(item.date).format("YYYY-MM-DD hh:mm:ss")}</div>
             </Skeleton>
           </List.Item>
         )}

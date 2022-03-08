@@ -5,7 +5,8 @@ import Header from './components/Header'
 import Aside from './components/Aside'
 import Bread from './components/Bread'
 
-export default function App() {
+
+function App() {
   return (
     <Layout id='app'>
       <Header />
@@ -22,4 +23,8 @@ export default function App() {
     </Layout>
   )
 }
+
+
+
+export default App
 

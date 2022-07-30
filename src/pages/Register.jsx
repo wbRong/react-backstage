@@ -3,7 +3,7 @@ import { Form, Input, Button, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom'
 import "./less/Login.less"
-import logoImg from '../assets/logo.png'
+// import logoImg from '../assets/logo.png'
 import {RegisterApi} from '../request/api'
 
 export default function Register() {
@@ -27,7 +27,7 @@ export default function Register() {
   return (
     <div className="login">
       <div className='login_box'>
-        <img src={logoImg} alt="" />
+        {/* <img src={logoImg} alt="" /> */}
         <Form
           name="basic"
           initialValues={{

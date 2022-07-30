@@ -3,7 +3,7 @@ import { Form, Input, Button, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import {Link, useNavigate} from 'react-router-dom'
 import "./less/Login.less"
-import logoImg from '../assets/logo.png'
+// import logoImg from '../assets/logo.png'
 import {LoginApi} from '../request/api'
 
 export default function Login() {
@@ -24,7 +24,7 @@ export default function Login() {
         localStorage.setItem('username', res.data.username)
         // 跳转到根路径
         setTimeout(()=>{
-          navigate('/')
+          navigate('/listlist')
         }, 1500)
       }else{
         message.error(res.message)
@@ -35,7 +35,7 @@ export default function Login() {
   return (
     <div className="login">
       <div className='login_box'>
-        <img src={logoImg} alt="" />
+        {/* <img src={logoImg} alt="" /> */}
         <Form
           name="basic"
           initialValues={{

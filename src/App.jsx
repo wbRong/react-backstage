@@ -19,7 +19,7 @@ function App() {
           </div>
         </div>
       </div>
-      <footer>Respect | Copyright &copy; 2022 Author 你单排吧</footer>
+      <footer>Respect | Copyright &copy; 2022 Author Ring</footer>
     </Layout>
   )
 }
